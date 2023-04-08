@@ -23,25 +23,30 @@ keys.forEach(key => {
                 }
             }
             else if(action === "divide" || action === "multiply" || action === "subtract" || action === "add"){
-                if(currentOperand.innerText !== '' && previousOperand.innerText === ''){
-                    operator = action
-                    currentOperand.innerText += ` ${key.innerText}`
-                    previousOperand.innerText = currentOperand.innerText
-                    currentOperand.innerText =''
+                if(action === "subtract" && currentOperand.innerText === ''){
+                    currentOperand.innerText += key.innerText
+                }
+                else{
+                    if(currentOperand.innerText !== '' && previousOperand.innerText === ''){
+                        operator = action
+                        currentOperand.innerText += ` ${key.innerText}`
+                        previousOperand.innerText = currentOperand.innerText
+                        currentOperand.innerText =''
 
-                }
-                if(currentOperand.innerText === '' && previousOperand.innerText !== ''){
-                    if(!previousOperand.innerText.includes(key.innerText)){
-                        previousOperand.innerText = previousOperand.innerText.slice(0,-2)
-                        previousOperand.innerText += ` ${key.innerText}`
                     }
-                }
-                //running total
-                if(currentOperand.innerText !== '' && previousOperand !== ''){
-                    calculate(previousOperand,currentOperand)
-                    currentOperand.innerText += ` ${key.innerText}`
-                    previousOperand.innerText = currentOperand.innerText
-                    currentOperand.innerText =''
+                    if(currentOperand.innerText === '' && previousOperand.innerText !== ''){
+                        if(!previousOperand.innerText.includes(key.innerText)){
+                            previousOperand.innerText = previousOperand.innerText.slice(0,-2)
+                            previousOperand.innerText += ` ${key.innerText}`
+                        }
+                    }
+                    //running total
+                    if(currentOperand.innerText !== '' && previousOperand !== ''){
+                        calculate(previousOperand,currentOperand)
+                        currentOperand.innerText += ` ${key.innerText}`
+                        previousOperand.innerText = currentOperand.innerText
+                        currentOperand.innerText =''
+                    }
                 }
             }
             else if(action === 'calculate'){
@@ -77,6 +82,13 @@ function calculate(n1,n2){
             result = n1 + n2
             break;
     }
+    if (result === undefined){
+        currentOperand.innerText = n2
+        previousOperand.innerText = ''
+        operator = ''
+        return
+
+    }        
     currentOperand.innerText = result
     previousOperand.innerText = ''
     operator = ''
